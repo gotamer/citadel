@@ -10,13 +10,13 @@ ________________________________________________________
 
 #### Features impemented
  - Users
-  + Create
-  + Login
-  + Logout
-  + Change Password
+	+ Create
+	+ Login
+	+ Logout
+	+ Change Password
 
  - Floors
-  + List with id, name and count of rooms
+	+ List with id, name and count of rooms
 
 *See docs for complete list*
 ________________________________________________________
