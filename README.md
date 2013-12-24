@@ -1,12 +1,32 @@
 Go Citadel Client
 =================
+[![GoDoc](https://godoc.org/bitbucket.org/gotamer/citadel?status.png)](https://godoc.org/bitbucket.org/gotamer/citadel)  
 
 This is a library to access [Citadel] email and collaboration servers from Go using the [Citadel] Protocol. 
 
+#### WARNING
+This code is experimental and may change or be removed without notice.
+________________________________________________________
+
+#### Features impemented
+ - Users
+  + Create
+  + Login
+  + Logout
+  + Change Password
+
+ - Floors
+  + List with id, name and count of rooms
+
+*See docs for complete list*
+________________________________________________________
+
+#### Install
+
+##### With go installed
+
 	go get bitbucket.org/gotamer/citadel
 
-
-[Citadel]:(http://www.citadel.org "Citadel")
 
 ________________________________________________________
 
@@ -19,3 +39,6 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+[Citadel]:(http://www.citadel.org "Citadel")

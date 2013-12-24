@@ -23,7 +23,7 @@ func (c *Citadel) UserCreate(username, password string) (ok bool) {
 	}
 
 	cmd := fmt.Sprintf("NEWU %s", username)
-	c.request(cmd)
+	c.Request(cmd)
 	if ok = c.code(); !ok {
 		return
 	}
@@ -34,18 +34,18 @@ func (c *Citadel) UserCreate(username, password string) (ok bool) {
 
 func (c *Citadel) Login(username, password string) (ok bool) {
 	cmd := fmt.Sprintf("USER %s", username)
-	c.request(cmd)
+	c.Request(cmd)
 	ok = c.code()
 	if ok {
 		cmd := fmt.Sprintf("PASS %s", password)
-		c.request(cmd)
+		c.Request(cmd)
 		ok = c.code()
 	}
 	return
 }
 
 func (c *Citadel) Logout() {
-	c.request("LOUT")
+	c.Request("LOUT")
 }
 
 // This command sets a new password for the currently logged in user.
@@ -60,7 +60,7 @@ func (c *Citadel) UserSetPassword(password string) (ok bool) {
 
 func (c *Citadel) userSetPassword(password string) bool {
 	cmd := fmt.Sprintf("SETP %s", password)
-	c.request(cmd)
+	c.Request(cmd)
 	return c.code()
 }
 

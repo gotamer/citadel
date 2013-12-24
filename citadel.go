@@ -78,7 +78,7 @@ func (c *Citadel) Open(addr string) {
 }
 
 func (c *Citadel) Close() {
-	c.request("QUIT")
+	c.Request("QUIT")
 	err := c.Conn.Close()
 	Check(err)
 }
@@ -89,10 +89,10 @@ func (c *Citadel) Iden() {
 		hostname = "localhost"
 	}
 	cmd := fmt.Sprintf("IDEN %s|%s|%s|%s|%s", "12", "1", "0.1", "GoLang Citadel", hostname)
-	c.request(cmd)
+	c.Request(cmd)
 }
 
-func (c *Citadel) request(cmd string) {
+func (c *Citadel) Request(cmd string) {
 	c.Error = c.Conn.PrintfLine("%s", cmd)
 	if !c.Check() {
 		return
@@ -104,15 +104,32 @@ func (c *Citadel) request(cmd string) {
 	}
 	c.Code, c.Error = strconv.Atoi(text[0:1])
 	if !c.Check() {
+		log.Println("Code: ", text)
 		return
 	}
-	c.Mesg, c.Error = strconv.Atoi(text[1:3])
-	if !c.Check() {
-		return
+	if c.Code != 0 {
+		c.Mesg, c.Error = strconv.Atoi(text[1:3])
+		if !c.Check() {
+			log.Println("Mesg: ", text)
+			return
+		}
 	}
 	if len(text) > 4 {
 		c.Resp = strings.Split(text[4:], "|")
 	}
+	log.Println("text: ", text)
+}
+
+func (c *Citadel) Responce() (rep [][]string) {
+	var text string
+	for {
+		text, c.Error = c.Conn.ReadLine()
+		if text == "000" {
+			break
+		}
+		rep = append(rep, strings.Split(text, "|"))
+	}
+	return
 }
 
 func (c *Citadel) setError() {
@@ -120,11 +137,7 @@ func (c *Citadel) setError() {
 }
 
 func (c *Citadel) Check() (ok bool) {
-	if c.Error != nil {
-		log.Println(c.Error)
-	} else {
-		ok = true
-	}
+	ok = Check(c.Error)
 	return
 }
 
