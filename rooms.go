@@ -5,6 +5,11 @@ import (
 	"time"
 )
 
+var Rooms struct {
+	List    []room
+	Updated int
+}
+
 type room struct {
 	Name     string    // Actual name of this room; may include '\' to separate trees
 	Flag     int       // QRFlags of this room
