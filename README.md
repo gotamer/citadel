@@ -16,9 +16,15 @@ ________________________________________________________
 	+ Change Password
 
  - Floors
-	+ List with id, name and count of rooms
+	+ List all floors *with id, name and count of rooms*
 
-*See docs for complete list*
+ - Rooms
+	+ List all rooms
+	+ List public rooms
+	+ Goto room
+	+ Stat room
+
+*See docs for complete list at [GoDoc]*
 ________________________________________________________
 
 #### Install
@@ -42,3 +48,4 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 
 [Citadel]:(http://www.citadel.org "Citadel")
+[GoDoc]:(https://godoc.org/bitbucket.org/gotamer/citadel)

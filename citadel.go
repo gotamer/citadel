@@ -7,7 +7,6 @@ package citadel
 
 import (
 	"fmt"
-	"log"
 	net "net/textproto"
 	"os"
 	"strconv"
@@ -53,9 +52,12 @@ const (
 
 type Citadel struct {
 	Conn  *net.Conn
+	Room  room
+	Floor floor
 	Code  int
 	Mesg  int
 	Resp  []string
+	Raw   string
 	Error error
 }
 
@@ -67,18 +69,16 @@ func New(addr string) (c *Citadel) {
 
 func (c *Citadel) Open(addr string) {
 	c.Conn, c.Error = net.Dial("tcp", addr)
-	if !c.Check() {
-		return
-	}
+	c.Check()
 	_, c.Error = c.Conn.ReadLine()
-	if !c.Check() {
-		return
-	}
+	c.Check()
 	c.Iden()
+	c.FloorsLoader()
 }
 
 func (c *Citadel) Close() {
 	c.Request("QUIT")
+	Debug(c.Raw)
 	err := c.Conn.Close()
 	Check(err)
 }
@@ -92,52 +92,37 @@ func (c *Citadel) Iden() {
 	c.Request(cmd)
 }
 
-func (c *Citadel) Request(cmd string) {
+func (c *Citadel) Request(cmd string) (ok bool) {
+	Debug(cmd)
 	c.Error = c.Conn.PrintfLine("%s", cmd)
-	if !c.Check() {
-		return
-	}
-	var text string
-	text, c.Error = c.Conn.ReadLine()
-	if !c.Check() {
-		return
-	}
-	c.Code, c.Error = strconv.Atoi(text[0:1])
-	if !c.Check() {
-		log.Println("Code: ", text)
-		return
-	}
+	c.Check()
+	c.Raw, c.Error = c.Conn.ReadLine()
+	Debug(c.Raw)
+	c.Check()
+	c.Code, c.Error = strconv.Atoi(c.Raw[0:1])
+	c.Check()
 	if c.Code != 0 {
-		c.Mesg, c.Error = strconv.Atoi(text[1:3])
-		if !c.Check() {
-			log.Println("Mesg: ", text)
-			return
-		}
+		c.Mesg, c.Error = strconv.Atoi(c.Raw[1:3])
+		c.Check()
 	}
-	if len(text) > 4 {
-		c.Resp = strings.Split(text[4:], "|")
+	if len(c.Raw) > 4 {
+		c.Resp = strings.Split(c.Raw[4:], "|")
+		Debug(c.Resp)
 	}
-	log.Println("text: ", text)
+	ok = true
+	return
 }
 
-func (c *Citadel) Responce() (rep [][]string) {
+func (c *Citadel) Responce() (r [][]string) {
 	var text string
 	for {
 		text, c.Error = c.Conn.ReadLine()
 		if text == "000" {
 			break
 		}
-		rep = append(rep, strings.Split(text, "|"))
+		r = append(r, strings.Split(text, "|"))
 	}
-	return
-}
-
-func (c *Citadel) setError() {
-	c.Error = fmt.Errorf("CIT CODE: %v MESG: %v %s", c.Code, c.Mesg, c.Resp)
-}
-
-func (c *Citadel) Check() (ok bool) {
-	ok = Check(c.Error)
+	Debug(r)
 	return
 }
 
@@ -179,15 +164,6 @@ func (c *Citadel) code() (ok bool) {
 		ok = true
 	default:
 		c.setError()
-	}
-	return
-}
-
-func Check(err error) (ok bool) {
-	if err != nil {
-		log.Println(err)
-	} else {
-		ok = true
 	}
 	return
 }
