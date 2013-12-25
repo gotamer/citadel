@@ -52,12 +52,12 @@ const (
 
 type Citadel struct {
 	Conn  *net.Conn
-	Room  room
-	Floor floor
-	Code  int
-	Mesg  int
+	Room  room  // Current room data
+	Floor floor // Current floor data
+	Code  int   // Citadel reponce CODE_XXXX
+	Mesg  int   // Citadel responce MESG_XXXX
 	Resp  []string
-	Raw   string
+	Raw   string // Raw responce from citadel
 	Error error
 }
 

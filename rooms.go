@@ -5,20 +5,6 @@ import (
 	"time"
 )
 
-var Rooms struct {
-	List    []room
-	Updated int
-}
-
-type RoomStat struct {
-	Name     string
-	NoUnread int       // 1   Number of unread messages in this room
-	NoTotal  int       // 2   Number of total messages in this room
-	Floor    floor     // 10  Floor Number
-	Modified time.Time // 15  From Server
-	Updated  time.Time // Time this was fatched by us
-}
-
 type room struct {
 	Name     string    // Actual name of this room; may include '\' to separate trees
 	Flag     int       // QRFlags of this room

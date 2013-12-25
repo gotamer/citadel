@@ -5,7 +5,7 @@ Go Citadel Client
 This is a library to access [Citadel] email and collaboration servers from Go using the [Citadel] Protocol. 
 
 #### WARNING
-This code is experimental and may change or be removed without notice.
+This code is experimental and may change without notice.
 ________________________________________________________
 
 #### Features impemented
@@ -21,10 +21,12 @@ ________________________________________________________
  - Rooms
 	+ List all rooms
 	+ List public rooms
+	
+ - Room
 	+ Goto room
 	+ Stat room
 
-*See docs for complete list at [GoDoc]*
+*See [GoDoc] for complete list*
 ________________________________________________________
 
 #### Install
