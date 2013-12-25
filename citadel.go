@@ -1,8 +1,8 @@
 // Go Citadel Client
 // "bitbucket.org/gotamer/citadel"
 //
-// This is a library to access Citadel email and collaboration servers from Go using the Citadel Protocol.
-// Citadel : http://www.citadel.org
+// This is a library to access [Citadel] email and collaboration servers from Go using the [Citadel] Protocol.
+// [Citadel]:(http://www.citadel.org "Citadel")
 package citadel
 
 import (
