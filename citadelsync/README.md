@@ -1,6 +1,44 @@
 [Citadel] Sync
 ============
 
+***************************************************
+## Import vCards to [Citadel]
+***************************************************
+
+A config file is requiered, set it with the -c flag.
+
+If the specified config file does not exist, one
+will be created with default values.
+
+ > -D will delete all items in the given room WITHOUT WARNING
+
+Optionaly you may specify an import path, to import vcards.
+The import path may be a file, or a folder.
+
+Username and Password for the Citadel Mail Server may be
+defined in the config file, or optionaly on the command line
+
+Enviroment:
+
+	0 = Production
+	1 = Prints alot of info
+	2 = Debug mode, same as 1 but will exit on error
+
+The -r Flag checks if the room exists one mail server. You
+can use this to verify that you have spelled the room name correctly
+
+**Hint**: Don't use the default config file name if you
+are planing to have more then one configuration.
+
+
+	-v=false: version
+	-h=false: Prints out this help text
+	-c="citadelVcard.json": Config file (*.json)
+	-u="": Username
+	-p="": Password
+	-r=false: Check if room exists
+	-D=false: Delete all items in the room!
+	-i="": Import file (*.vcf)
 
 ## Install
 
