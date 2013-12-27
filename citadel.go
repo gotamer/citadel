@@ -1,8 +1,5 @@
-// Go Citadel Client
-// "bitbucket.org/gotamer/citadel"
-//
-// This is a library to access [Citadel] email and collaboration servers from Go using the [Citadel] Protocol.
-// [Citadel]:(http://www.citadel.org "Citadel")
+// Package bitbucket.org/gotamer/citadel is a Citadel Client library to access Citadel email and collaboration servers from Go using the Citadel Protocol.
+// http://www.citadel.org
 package citadel
 
 import (
@@ -11,9 +8,16 @@ import (
 	"os"
 	"strconv"
 	"strings"
+
+	"bitbucket.org/gotamer/errors"
 )
 
 const (
+	VERSION = 0.1
+
+	DS = "|"
+	DE = "000"
+
 	CODE_DONE            = 0
 	CODE_LISTING_FOLLOWS = 1 // The requested operation is progressing and is now delivering text. The client *must* now read lines of text until it receives the termination sequence (“000” on a line by itself).
 	CODE_OK              = 2 // The requested operation succeeded.
@@ -73,14 +77,12 @@ func (c *Citadel) Open(addr string) {
 	_, c.Error = c.Conn.ReadLine()
 	c.Check()
 	c.Iden()
-	c.FloorsLoader()
 }
 
 func (c *Citadel) Close() {
 	c.Request("QUIT")
-	Debug(c.Raw)
 	err := c.Conn.Close()
-	Check(err)
+	e.Check(err)
 }
 
 func (c *Citadel) Iden() {
@@ -88,41 +90,45 @@ func (c *Citadel) Iden() {
 	if err != nil {
 		hostname = "localhost"
 	}
-	cmd := fmt.Sprintf("IDEN %s|%s|%s|%s|%s", "12", "1", "0.1", "GoLang Citadel", hostname)
+	cmd := fmt.Sprintf("IDEN 1|1|%s|GoTamer|%s", VERSION, hostname)
 	c.Request(cmd)
 }
 
+// Makes a request and returns the 1st responce
 func (c *Citadel) Request(cmd string) (ok bool) {
-	Debug(cmd)
+	e.Info(cmd)
 	c.Error = c.Conn.PrintfLine("%s", cmd)
 	c.Check()
 	c.Raw, c.Error = c.Conn.ReadLine()
-	Debug(c.Raw)
+	c.Raw = strings.Trim(c.Raw, " |")
+	e.Info(c.Raw)
 	c.Check()
 	c.Code, c.Error = strconv.Atoi(c.Raw[0:1])
 	c.Check()
-	if c.Code != 0 {
+	if c.Code != 0 && len(c.Raw) > 2 {
 		c.Mesg, c.Error = strconv.Atoi(c.Raw[1:3])
 		c.Check()
 	}
 	if len(c.Raw) > 4 {
-		c.Resp = strings.Split(c.Raw[4:], "|")
-		Debug(c.Resp)
+		c.Resp = strings.Split(c.Raw[4:], DS)
+		e.Info("Resp: %v", c.Resp)
 	}
 	ok = true
 	return
 }
 
+// This is for multi line responces.
+// Used when receiving CODE_LISTING_FOLLOWS
 func (c *Citadel) Responce() (r [][]string) {
 	var text string
 	for {
 		text, c.Error = c.Conn.ReadLine()
-		if text == "000" {
+		c.Check()
+		if text == DE {
 			break
 		}
 		r = append(r, strings.Split(text, "|"))
 	}
-	Debug(r)
 	return
 }
 

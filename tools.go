@@ -3,69 +3,31 @@ package citadel
 import (
 	"fmt"
 	"log"
-	"os"
+	"regexp"
 	"strconv"
 	"time"
-)
 
-type env uint8
+	"bitbucket.org/gotamer/errors"
+)
 
 const (
-	ENV_PROD env = iota // Environment
-	ENV_INFO
-	ENV_FAIL
+	Rx_USERNAME      = "^[A-Za-z0-9_-]{4,}$"
+	Rx_USERNAME_TRIM = "_- "
+	Rx_PASSWORD      = "^.{5,}$"
+	Rx_SPACE_TRIM    = " "
 )
 
-var (
-	ENVIROMENT env = ENV_FAIL
-	LogError   *log.Logger
-	LogDebug   *log.Logger
-)
-
-func init() {
-	Logger(os.Stderr)
+func (c *Citadel) Check() (ok bool) {
+	return e.Check(c.Error)
 }
 
-func Logger(to *os.File) {
-	LogError = log.New(to, "", 19)
-	LogError.SetPrefix("Error: ")
-	LogDebug = log.New(to, "", 19)
-	LogDebug.SetPrefix("Info: ")
-}
-
-func Check(err error) (ok bool) {
-	if err == nil {
-		ok = true
-	} else {
-		LogError.Output(2, err.Error())
-		if ENVIROMENT == ENV_FAIL {
-			os.Exit(2)
-		}
-	}
-	return
-}
-
-func Debug(m interface{}) {
-	if ENVIROMENT != ENV_PROD {
-		LogDebug.Output(2, fmt.Sprintf("%s", m))
-	}
+// You can use this to see information about the last command executed
+func (c *Citadel) Info() {
+	e.Info("\nInfo CODE: %v MESG: %v: %s\n\tResponce RAW: %s\n\n", c.Code, c.Mesg, c.Resp, c.Raw)
 }
 
 func (c *Citadel) setError() {
 	c.Error = fmt.Errorf("CIT CODE: %v MESG: %v: %s", c.Code, c.Mesg, c.Resp)
-}
-
-func (c *Citadel) Check() (ok bool) {
-	if c.Error == nil {
-		ok = true
-	} else {
-		LogError.Output(2, c.Error.Error())
-		if ENVIROMENT == ENV_FAIL {
-			c.Close()
-			os.Exit(1)
-		}
-	}
-	return
 }
 
 func StrToInt(s string) (i int, ok bool) {
@@ -87,4 +49,9 @@ func StrToTime(s string) (t time.Time, ok bool) {
 		ok = true
 	}
 	return
+}
+
+func Validate(t, rx string) bool {
+	var validator = regexp.MustCompile(rx)
+	return validator.MatchString(t)
 }

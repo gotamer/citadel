@@ -2,14 +2,16 @@ package citadel
 
 import (
 	"fmt"
-	"regexp"
 )
 
 const (
-	Rx_USERNAME      = "^[A-Za-z0-9_-]{4,}$"
-	Rx_USERNAME_TRIM = "_- "
-	Rx_PASSWORD      = "^.{5,}$"
-	Rx_SPACE_TRIM    = " "
+	USE_LEVEL_DELETED  = "0"
+	USE_LEVEL_NEW      = "1"
+	USE_LEVEL_PROBLEM  = "2"
+	USE_LEVEL_LOCAL    = "3"
+	USE_LEVEL_NETWORK  = "4"
+	USE_LEVEL_PREFERED = "5"
+	USE_LEVEL_ADMIN    = "6"
 )
 
 func (c *Citadel) UserCreate(username, password string) (ok bool) {
@@ -41,6 +43,7 @@ func (c *Citadel) Login(username, password string) (ok bool) {
 		c.Request(cmd)
 		ok = c.code()
 	}
+	c.FloorsLoader()
 	return
 }
 
@@ -64,7 +67,8 @@ func (c *Citadel) userSetPassword(password string) bool {
 	return c.code()
 }
 
-func Validate(t, rx string) bool {
-	var validator = regexp.MustCompile(rx)
-	return validator.MatchString(t)
+func (c *Citadel) UserCfg(username string) bool {
+	cmd := fmt.Sprintf("AGUP %s", username)
+	c.Request(cmd)
+	return c.code()
 }

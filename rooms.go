@@ -38,6 +38,7 @@ func (c *Citadel) Goto(ro string) (ok bool) {
 // Retrieve modification time of current room
 func (c *Citadel) RoomsStat() (ok bool) {
 	if c.Request("STAT") {
+		c.Check()
 		if c.Resp[0] == c.Room.Name {
 			c.Room.Updated = time.Now().UTC() // a email servers should always run in UTC mode
 			c.Room.Modified, ok = StrToTime(c.Resp[1])
@@ -66,6 +67,9 @@ func (c *Citadel) rooms(code string) (ok bool) {
 		if no != 0 {
 			for i := 0; i < no; i++ {
 				r := res[i]
+				if r[0] == "000" {
+					break
+				}
 				flag, _ := StrToInt(r[1])
 				floor, _ := StrToInt(r[2])
 				Rooms.List = append(Rooms.List, room{Name: r[0], Flag: flag, Floor: Floors[floor]})

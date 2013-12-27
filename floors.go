@@ -10,8 +10,10 @@ type floor struct {
 
 func (c *Citadel) FloorsLoader() (ok bool) {
 	c.Request("LFLR")
+	c.Check()
 	if c.Code == CODE_LISTING_FOLLOWS {
 		res := c.Responce()
+		c.Check()
 		ok = true
 		no := len(res)
 		if no != 0 {
