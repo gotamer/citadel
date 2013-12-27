@@ -2,7 +2,7 @@
 ==============
 
 ***************************************************
-## Import vCards to [Citadel]
+## Imports vCards in to the [Citadel] Mail Server
 ***************************************************
 
 #### Features
@@ -20,12 +20,23 @@
  - Compare revision state and sync in case you modify a vCard on the server. This
  is not supported in version 1, vCards on the server will be over written by the local once.
  - Create an executable for Android etc.
+ - Create a single vCard to hold all contacts, so it can be used as an address book in Thunderbird etc.
 
+#### Features not supported
+
+ - Does not support non standard vCard fields like
+   *(If you must have one or two of those let me know)*
+ 	- X-EVOLUTION-RADIO
+ 	- X-KADDRESSBOOK-X-AssistantsName
 
 
 #### Hints:
  - Backup your vCards before you start using citadelsync, both local and server
  - Backup your config file before you upgrade to a new version of citadelsync
+
+#### Importent Note:
+In order to keep in sync version 1 of citadelsync deletes all contacts, in the given room on your citadel server, then uploads the vCards from your local folder to the room!
+
 
 ### Command Line Flags:
 
