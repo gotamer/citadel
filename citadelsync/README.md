@@ -1,9 +1,17 @@
-[Citadel] Sync
+[Citadel Sync]
 ==============
 
 ***************************************************
 ## Imports vCards in to the [Citadel] Mail Server
 ***************************************************
+
+[Citadel Sync] moved, in preperarion for version 2
+
+You can find it here: http://bitbucket.org/gotamer/citadelsync
+
+
+Following is no longer maintained
+=================================
 
 #### Features
 
@@ -96,4 +104,5 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 
 [Citadel]:(http://www.citadel.org "Citadel")
-[GoDoc]:(https://godoc.org/bitbucket.org/gotamer/citadel)
+[Citadel Sync]:(http://bitbucket.org/gotamer/citadelsync)
+[GoDoc]:(https://godoc.org/bitbucket.org/gotamer/citadelsync)
