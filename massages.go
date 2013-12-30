@@ -2,8 +2,6 @@ package citadel
 
 import (
 	"fmt"
-	//"strconv"
-	//"time"
 )
 
 type msglist string

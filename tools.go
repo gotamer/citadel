@@ -18,16 +18,20 @@ const (
 )
 
 func (c *Citadel) Check() (ok bool) {
-	return e.Check(c.Error)
+	if c.Error != nil {
+		ok = false
+		c.Info()
+	}
+	return
 }
 
 // You can use this to see information about the last command executed
 func (c *Citadel) Info() {
-	e.Info("\nInfo CODE: %v MESG: %v: %s\n\tResponce RAW: %s\n\n", c.Code, c.Mesg, c.Resp, c.Raw)
+	e.Info("\nInfo CODE: %v MESG: %v: %v\n\tResponce RAW: %s\n\n", c.Code, c.Mesg, c.Resp, c.Raw)
 }
 
 func (c *Citadel) setError() {
-	c.Error = fmt.Errorf("CIT CODE: %v MESG: %v: %s", c.Code, c.Mesg, c.Resp)
+	c.Error = fmt.Errorf("CIT CODE: %v MESG: %v: %v\n\tResponce RAW: %s\n\n", c.Code, c.Mesg, c.Resp, c.Raw)
 }
 
 func StrToInt(s string) (i int, ok bool) {

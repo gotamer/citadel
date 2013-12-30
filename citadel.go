@@ -18,6 +18,14 @@ const (
 	DS = "|"
 	DE = "000"
 
+	VIEW_BBS         = "0" // Bulletin board view
+	VIEW_MAILBOX     = "1" // Mailbox summary
+	VIEW_ADDRESSBOOK = "2" // Address book view
+	VIEW_CALENDAR    = "3" // Calendar view
+	VIEW_TASKS       = "4" // Tasks view
+	VIEW_NOTES       = "5" // Notes view
+	VIEW_WIKI        = "6" // Wiki view
+
 	CODE_DONE            = 0
 	CODE_LISTING_FOLLOWS = 1 // The requested operation is progressing and is now delivering text. The client *must* now read lines of text until it receives the termination sequence (“000” on a line by itself).
 	CODE_OK              = 2 // The requested operation succeeded.
@@ -72,8 +80,9 @@ func New(addr string) (c *Citadel) {
 }
 
 func (c *Citadel) Open(addr string) {
-	c.Conn, c.Error = net.Dial("tcp", addr)
-	c.Check()
+	var err error
+	c.Conn, err = net.Dial("tcp", addr)
+	e.Check(err)
 	_, c.Error = c.Conn.ReadLine()
 	c.Check()
 	c.Iden()
@@ -90,24 +99,24 @@ func (c *Citadel) Iden() {
 	if err != nil {
 		hostname = "localhost"
 	}
-	cmd := fmt.Sprintf("IDEN 1|1|%s|GoTamer|%s", VERSION, hostname)
+	cmd := fmt.Sprintf("IDEN 1|1|%v|GoTamer|%v", VERSION, hostname)
 	c.Request(cmd)
 }
 
 // Makes a request and returns the 1st responce
 func (c *Citadel) Request(cmd string) (ok bool) {
+	var err error
 	e.Info(cmd)
-	c.Error = c.Conn.PrintfLine("%s", cmd)
-	c.Check()
+	err = c.Conn.PrintfLine("%s", cmd)
+	e.Check(err)
 	c.Raw, c.Error = c.Conn.ReadLine()
+	c.Check()
 	c.Raw = strings.Trim(c.Raw, " |")
-	e.Info(c.Raw)
-	c.Check()
-	c.Code, c.Error = strconv.Atoi(c.Raw[0:1])
-	c.Check()
+	c.Code, err = strconv.Atoi(c.Raw[0:1])
+	e.Check(err)
 	if c.Code != 0 && len(c.Raw) > 2 {
-		c.Mesg, c.Error = strconv.Atoi(c.Raw[1:3])
-		c.Check()
+		c.Mesg, err = strconv.Atoi(c.Raw[1:3])
+		e.Check(err)
 	}
 	if len(c.Raw) > 4 {
 		c.Resp = strings.Split(c.Raw[4:], DS)
@@ -120,14 +129,16 @@ func (c *Citadel) Request(cmd string) (ok bool) {
 // This is for multi line responces.
 // Used when receiving CODE_LISTING_FOLLOWS
 func (c *Citadel) Responce() (r [][]string) {
+	var err error
 	var text string
 	for {
-		text, c.Error = c.Conn.ReadLine()
-		c.Check()
-		if text == DE {
-			break
+		text, err = c.Conn.ReadLine()
+		if e.Check(err) {
+			if text == DE {
+				break
+			}
+			r = append(r, strings.Split(text, "|"))
 		}
-		r = append(r, strings.Split(text, "|"))
 	}
 	return
 }
@@ -171,6 +182,7 @@ func (c *Citadel) code() (ok bool) {
 	default:
 		c.setError()
 	}
+	c.Check()
 	return
 }
 
