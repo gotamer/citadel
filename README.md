@@ -1,11 +1,8 @@
 Go Citadel Client
 =================
-[![GoDoc](https://godoc.org/bitbucket.org/gotamer/citadel?status.png)](https://godoc.org/bitbucket.org/gotamer/citadel)  
+[![GoDoc](https://godoc.org/bitbucket.org/gotamer/citadel?status.png)](https://godoc.org/bitbucket.org/gotamer/citadel)
 
-This is a library to access [Citadel] email and collaboration servers from Go using the [Citadel] Protocol. 
-
-#### WARNING
-This code is experimental and may change without notice.
+This is a library to access [Citadel] email and collaboration servers from Go using the [Citadel] Protocol.
 ________________________________________________________
 
 #### Features impemented
@@ -21,17 +18,27 @@ ________________________________________________________
  - Rooms
 	+ List all rooms
 	+ List public rooms
-	
+
  - Room
 	+ Goto room
 	+ Stat room
+
+ - Messages
+    + Read Message
+	+ Parse vCard, vNotes and vCalendar files
 
 *See [GoDoc] for complete list*
 ________________________________________________________
 
 #### Install
 
-##### With go installed
+##### First install Go
+
+ - [Linux and FreeBSD](http://golang.org/doc/install#tarball)
+ - [Mac OS X](http://golang.org/doc/install#osx)
+ - [Windows MSI installer](http://golang.org/doc/install#windows)
+
+##### With go installed run
 
 	go get bitbucket.org/gotamer/citadel
 

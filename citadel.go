@@ -12,9 +12,20 @@ import (
 	"bitbucket.org/gotamer/errors"
 )
 
-const (
-	VERSION = 0.1
+/************************************************
+ * Client ID's for CitadelGo
+ * 1. CitadelGo the library
+ * 2. CitadelSync https://bitbucket.org/gotamer/citadelsync
+ ************************************************/
 
+var (
+	DEVELOPER_ID   = 12    // Developer ID number	(same as the server developer ID numbers in the INFO command – please obtain one if you are a new developer)
+	CLIENT_ID      = 1     // Client ID number	(which does not have to be globally unique - only unique within the domain of the developer number)
+	CLIENT_VERSION = 3     // Client version number	the Version of your Client
+	CLIENT_NAME    = "Lib" // Client IDString	afree-form text string describing the client
+)
+
+const (
 	DS = "|"
 	DE = "000"
 
@@ -99,7 +110,7 @@ func (c *Citadel) Iden() {
 	if err != nil {
 		hostname = "localhost"
 	}
-	cmd := fmt.Sprintf("IDEN 1|1|%v|GoTamer|%v", VERSION, hostname)
+	var cmd = fmt.Sprintf("IDEN %v|%v|%v|CitGo %v|%v", DEVELOPER_ID, CLIENT_ID, CLIENT_VERSION, CLIENT_NAME, hostname)
 	c.Request(cmd)
 }
 
@@ -108,21 +119,20 @@ func (c *Citadel) Request(cmd string) (ok bool) {
 	var err error
 	e.Info(cmd)
 	err = c.Conn.PrintfLine("%s", cmd)
-	e.Check(err)
+	ok = e.Check(err)
 	c.Raw, c.Error = c.Conn.ReadLine()
 	c.Check()
 	c.Raw = strings.Trim(c.Raw, " |")
 	c.Code, err = strconv.Atoi(c.Raw[0:1])
-	e.Check(err)
+	ok = e.Check(err)
 	if c.Code != 0 && len(c.Raw) > 2 {
 		c.Mesg, err = strconv.Atoi(c.Raw[1:3])
-		e.Check(err)
+		ok = e.Check(err)
 	}
 	if len(c.Raw) > 4 {
 		c.Resp = strings.Split(c.Raw[4:], DS)
 		e.Info("Resp: %v", c.Resp)
 	}
-	ok = true
 	return
 }
 
