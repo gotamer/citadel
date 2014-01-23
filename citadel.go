@@ -3,11 +3,14 @@
 package citadel
 
 import (
+	"crypto/tls"
 	"fmt"
-	net "net/textproto"
+	"net"
+	"net/textproto"
 	"os"
 	"strconv"
 	"strings"
+	"time"
 
 	"bitbucket.org/gotamer/errors"
 )
@@ -15,7 +18,7 @@ import (
 /************************************************
  * Client ID's for CitadelGo
  * 1. CitadelGo the library
- * 2. CitadelSync https://bitbucket.org/gotamer/citadelsync
+ * 2. CitadelSync https://bitbucket.org/gotamer/citadel/sync
  ************************************************/
 
 var (
@@ -74,7 +77,8 @@ const (
 )
 
 type Citadel struct {
-	Conn  *net.Conn
+	tls   *tls.Conn
+	Conn  *textproto.Conn
 	Room  room  // Current room data
 	Floor floor // Current floor data
 	Code  int   // Citadel reponce CODE_XXXX
@@ -92,11 +96,37 @@ func New(addr string) (c *Citadel) {
 
 func (c *Citadel) Open(addr string) {
 	var err error
-	c.Conn, err = net.Dial("tcp", addr)
+	c.Conn, err = textproto.Dial("tcp", addr)
 	e.Check(err)
 	_, c.Error = c.Conn.ReadLine()
 	c.Check()
 	c.Iden()
+}
+
+// Timeout values for the Dial functions.
+var (
+	NetTimeout    = 30 * time.Second // Time to establish a TCP connection
+	ServerTimeout = 60 * time.Second // Time to receive greeting and capabilities
+)
+
+// Dial returns a new Client connected to a server at addr.
+func Dial(addr string) (cit *Citadel, err error) {
+	addr = defaultPort(addr, "504")
+	cit = new(Citadel)
+	if cit.Conn, err = textproto.Dial("tcp", addr); err == nil {
+		_, cit.Error = cit.Conn.ReadLine()
+		cit.Check()
+	}
+	return
+}
+
+// defaultPort joins addr and port if addr contains just the host name or IP.
+func defaultPort(addr, port string) string {
+	_, _, err := net.SplitHostPort(addr)
+	if err != nil {
+		addr = net.JoinHostPort(addr, port)
+	}
+	return addr
 }
 
 func (c *Citadel) Close() {
