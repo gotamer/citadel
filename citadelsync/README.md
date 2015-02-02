@@ -5,7 +5,9 @@
 ## Sync local files with a [Citadel] Mail Server
 ************************************************
 
-See [Wiki] for more info.
+See Wiki for more info:
+https://bitbucket.org/gotamer/citadel/wiki/CitadelSync
+
 -------------------------
 
 
@@ -22,3 +24,4 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 [CitadelSync]:(https://bitbucket.org/gotamer/citadel/wiki/CitadelSync)
 [Wiki]:(https://bitbucket.org/gotamer/citadel/wiki/CitadelSync)
+
