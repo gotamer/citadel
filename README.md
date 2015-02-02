@@ -2,7 +2,12 @@ Go Citadel Client
 =================
 [![GoDoc](https://godoc.org/bitbucket.org/gotamer/citadel?status.png)](https://godoc.org/bitbucket.org/gotamer/citadel)
 
+If you are looking for the citadelsync application go here:
+https://bitbucket.org/gotamer/citadel/wiki/CitadelSync
+
+
 This is a library to access [Citadel] email and collaboration servers from Go using the [Citadel] Protocol.
+
 ________________________________________________________
 
 #### Features impemented
@@ -47,7 +52,7 @@ ________________________________________________________
 
 #### The MIT License (MIT)
 
-Copyright © 2013 Dennis T Kaplan <http://www.robotamer.com>
+Copyright © 2013 - 2015 Dennis T Kaplan <http://www.robotamer.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
