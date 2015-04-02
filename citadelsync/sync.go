@@ -180,6 +180,7 @@ func main() {
 		FilesInfo()
 		CitadelReceive()
 		CitadelSend()
+		CitadelDeleted()
 		DBSave()
 	}
 }
@@ -271,7 +272,7 @@ func (db *database) CitadelEUID() {
 		if err != nil {
 			hostname = "citadel.sync"
 		}
-		db.CitEUID = fmt.Sprintf("<%v@%v>", db.UID, hostname)
+		db.CitEUID = fmt.Sprintf("%v@%v", db.UID, hostname)
 	}
 }
 
@@ -333,19 +334,31 @@ func readDir(path string) (fis []os.FileInfo) {
 }
 
 type database struct {
-	UID          string
-	CitEUID      string
-	CitUxTime    int
-	FileName     string
-	MimeType     string
-	FileModTime  time.Time
-	fileModified bool
-	citModified  bool
+	UID           string
+	CitEUID       string
+	CitUxTime     int
+	FileName      string
+	MimeType      string
+	FileModTime   time.Time
+	fileModified  bool
+	citModified   bool
+	citNotDeleted bool
+}
+
+func CitadelDeleted() {
+	for id, dbitem := range DB {
+		if dbitem.citNotDeleted == false {
+			fmt.Println("Deleting File: " + id)
+			os.Remove(Cfg.LocalDir + PS + dbitem.FileName)
+			delete(DB, id)
+		}
+	}
 }
 
 // Check which one is newer file or citadel
 func modified(message *citadel.Message, dav *citadel.Dav) {
 	if dbitem, ok := DB[dav.UID]; ok {
+		DB[dav.UID].citNotDeleted = true
 		if dbitem.CitUxTime > message.UxTime {
 			fmt.Println("CitUx is bigger: ", dav.UID)
 			dbitem.citModified = true
@@ -384,6 +397,7 @@ func CitadelReceive() {
 				modified(message, dav)
 				if dbitem, ok := DB[dav.UID]; ok {
 					if dbitem.citModified {
+						e.Info("DB modified! %v", dbitem.UID)
 						ioutil.WriteFile(Cfg.LocalDir+PS+dbitem.FileName, []byte(dav.Object), 0640)
 						dbitem.setDbFileModTime()
 					}
@@ -413,11 +427,11 @@ func CitadelSend() {
 	for _, dbitem := range DB {
 		if dbitem.fileModified == false {
 			e.Info("File not modified; not sending! %v", dbitem.UID)
-			fmt.Printf("Not Sending file %v\n", dbitem.UID)
+			//fmt.Printf("Not Sending file %v\n", dbitem.UID)
 			continue
 		}
 		e.Info("Sending file %v", dbitem.UID)
-		fmt.Printf("Sending file %v\n", dbitem.UID)
+		//fmt.Printf("Sending file %v\n", dbitem.UID)
 		bytes, err := ioutil.ReadFile(Cfg.LocalDir + PS + dbitem.FileName)
 		ok := e.Check(err)
 		if ok {
