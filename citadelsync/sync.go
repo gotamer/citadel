@@ -379,6 +379,7 @@ func modified(message *citadel.Message, dav *citadel.Dav) {
 		dbitem.mimeType()
 		dbitem.citModified = true
 		dbitem.fileModified = false
+		dbitem.citNotDeleted = true
 		dbitem.CitadelEUID()
 		DB[dav.UID] = dbitem
 	}
