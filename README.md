@@ -12,7 +12,7 @@ If you are looking for the citadelsync application go here:
 [citadelsync folder](https://github.com/gotamer/citadel/tree/master/citadelsync)
 
 
-This is a library to access the [Citadel] email and collaboration servers from Go using the [Citadel] Protocol.
+This is a library to access the [Citadel](http://www.citadel.org "Citadel") email and collaboration servers from Go using the [Citadel](http://www.citadel.org "Citadel") Protocol.
 
 ________________________________________________________
 
@@ -54,5 +54,5 @@ ________________________________________________________
 	go get bitbucket.org/gotamer/citadel
 
 
-[Citadel]:(http://www.citadel.org "Citadel")
-[GoDoc]:(https://godoc.org/github.com/gotamer/citadel)
+[Citadel](http://www.citadel.org "Citadel")
+[GoDoc](https://godoc.org/github.com/gotamer/citadel)
