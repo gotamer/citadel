@@ -38,7 +38,7 @@ ________________________________________________________
     + Read Message
 	+ Parse vCard, vNotes and vCalendar files
 
-*See [GoDoc] for complete list*
+*See [GoDoc](https://godoc.org/github.com/gotamer/citadel) for complete list*
 ________________________________________________________
 
 #### Install
@@ -53,6 +53,3 @@ ________________________________________________________
 
 	go get bitbucket.org/gotamer/citadel
 
-
-[Citadel](http://www.citadel.org "Citadel")
-[GoDoc](https://godoc.org/github.com/gotamer/citadel)
