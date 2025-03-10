@@ -1,12 +1,18 @@
-Go Citadel Client
-=================
-[![GoDoc](https://godoc.org/bitbucket.org/gotamer/citadel?status.png)](https://godoc.org/bitbucket.org/gotamer/citadel)
+---
+title: Citadel Client
+description: Library to access Citadel email and collaboration servers from Go, and a command-line tool that uses this library to sync data with the server.
+tags: [email,groupware,vCard,vNotes,vCalendar]
+---
+
+Citadel Client
+==============
+[![GoDoc](https://godoc.org/github.com/gotamer/citadel?status.png)](https://godoc.org/github.com/gotamer/citadel)
 
 If you are looking for the citadelsync application go here:
-https://bitbucket.org/gotamer/citadel/wiki/CitadelSync
+[citadelsync folder](https://github.com/gotamer/citadel/tree/master/citadelsync)
 
 
-This is a library to access [Citadel] email and collaboration servers from Go using the [Citadel] Protocol.
+This is a library to access the [Citadel] email and collaboration servers from Go using the [Citadel] Protocol.
 
 ________________________________________________________
 
@@ -48,18 +54,5 @@ ________________________________________________________
 	go get bitbucket.org/gotamer/citadel
 
 
-________________________________________________________
-
-#### The MIT License (MIT)
-
-Copyright © 2013 - 2015 Dennis T Kaplan <http://www.robotamer.com>
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-
 [Citadel]:(http://www.citadel.org "Citadel")
-[GoDoc]:(https://godoc.org/bitbucket.org/gotamer/citadel)
+[GoDoc]:(https://godoc.org/github.com/gotamer/citadel)
