@@ -1,0 +1,10 @@
+Name = 'citadel'
+Version = '0.0.3'
+Package = 'go.hansaray.pw/citadel'
+Homepage = "http://go.hansaray.pw/citadel"
+Repo = 'github.com/gotamer/citadel.git'
+Title = "Citadel Client"
+Description = 'Library to access Citadel email and collaboration servers from Go, and a command-line tool that uses this library to sync data with the server.'
+Documentation = 'https://pkg.go.dev/go.hansaray.pw/citadel'
+Tags = ['email','groupware','vCard','vNotes','vCalendar']
+License = 'MIT'
